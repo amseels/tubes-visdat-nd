@@ -25,29 +25,7 @@ from bokeh.models.widgets import Tabs, Panel
 eMoney_ds = pd.read_excel("./data/Data Penggunaan Uang Elektronik di Indonesia 2010 - 2021.xlsx")
 eMoney_ds.head()
 
-"""## Output"""
-
-# Determine where the visualization will be rendered
-# output_file('filename.html')  # Render to static HTML, or 
-# output_notebook()  # Render inline in a Jupyter Notebook
-
 """## Set Up Figure"""
-
-def style_plot(plot):
-    # axis styling, legend styling
-    plot.outline_line_color = None
-    plot.axis.axis_line_color = None
-    plot.axis.major_tick_line_color = None
-    plot.axis.minor_tick_line_color = None
-    plot.xgrid.grid_line_color = None
-    plot.xaxis.formatter = DatetimeTickFormatter(months = ["%b %Y"],
-                                                 years = ["%Y"])
-    plot.yaxis.formatter = PrintfTickFormatter(format = f'Rp%0.2f')
-    #plot.legend.location = "top_left"
-    #plot.legend.border_line_alpha = 0
-    #plot.legend.background_fill_alpha = 0
-    plot.title.text_font_size = "14pt"
-    return plot
 
 stat_figs = {}
 
@@ -81,8 +59,6 @@ fig1.add_tools(HoverTool(tooltips = tooltips,
                         formatters = formatters))
 # show(fig1)
 
-stat_figs["Volume"] = fig1
-
 """# Nominal uang elektronik """
 
 fig2 = figure(
@@ -115,8 +91,6 @@ fig2.add_tools(HoverTool(tooltips = tooltips,
                         formatters = formatters))
 # show(fig2)
 
-stat_figs["Nominal"] = fig2
-
 """# Volume uang elektronik dan Nominal uang elektronik """
 
 fig1.x_range = fig2.x_range
@@ -127,13 +101,15 @@ fig3 = row(fig1,fig2)
 isi = """<h1>Visualisasi Penggunaan Uang Elektronik</h1>
 <h3><i>Penggunaan uang elektronik di Indonesia pada rentang tahun 2010 - 2021</i><h3>"""
 title = Div(text=isi)
+
 #add widget panel and tab
 fig1_panel = Panel(child=fig1, title='Volume Uang Elektronik')
 fig2_panel = Panel(child=fig2, title='Nominal Uang Elektronik ')
 fig3_panel = Panel(child=fig3, title='Perbandingan Volume dan Nominal uang elektronik' )
 tab = Tabs(tabs=[fig1_panel, fig2_panel, fig3_panel])
+
 #add layout
 layout = column(title,tab)
 curdoc().add_root(layout)
-
+curdoc().title = "Tugas Visualisasi Data 1301180296 1301181017"
 # output_file('Uang_elektronik_Indonesia.html')
